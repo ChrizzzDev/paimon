@@ -1,0 +1,16 @@
+{
+	"extends": "@sapphire/ts-config/extra-strict",
+	"compilerOptions": {
+		"rootDir": "src",
+		"outDir": "dist",
+		"tsBuildInfoFile": "dist/.tsbuildinfo",
+		"baseUrl": ".",
+		"paths": {
+			"@/*": ["src/*"],
+			"@lib/*": ["src/lib/*"],
+			"@models/*": ["src/models/*"]
+		}
+	},
+	"include": ["src"],
+	"exclude": ["node_modules", "dist", "test"]
+}
