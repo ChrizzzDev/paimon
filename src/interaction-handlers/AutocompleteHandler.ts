@@ -9,7 +9,7 @@ const query = {
 	verboseCategories: true,
 	queryLanguages: [Language.Spanish, Language.English],
 	resultLanguage: Language.Spanish
-} satisfies genshindb.QueryOptions;
+} satisfies genshindb.QueryOptions; // Opciones para no ponerlo por cada búsqueda, satisfaciendo la interfaz para que no ocurra ningún error
 
 @ApplyOptions<InteractionHandler.Options>({
 	interactionHandlerType: InteractionHandlerTypes.Autocomplete
@@ -24,16 +24,11 @@ export class AutocompleteHandler extends InteractionHandler {
 		switch (focusedValue.name) {
 			case 'character': {
 				const result = genshindb.characters('names', { ...query });
-
-				const map = result
-					.filter((c) => c.name.toLowerCase().startsWith(focusedValue.value.toLowerCase()))
-					.map((character) => ({ name: character.name, value: character.name }));
-				return this.some(result.length > 25 ? map.slice(0, 25) : map);
+				return this.map(result, focusedValue);
 			}
 
 			case 'weapon': {
 				const result = genshindb.weapons('names', { ...query });
-
 				return this.map(result, focusedValue)
 			}
 
