@@ -11,13 +11,19 @@ export class UserCommand extends Command {
 		this.getPing(message);
 	}
 
-	private getPing(message: Message) {
-		const msg = message.createdTimestamp;
+	public override chatInputRun(interaction: Command.ChatInputCommandInteraction) {
+		this.getPing(interaction);
+	}
+
+	private getPing(messageOrInteraction: Message | Command.ChatInputCommandInteraction) {
+		const msg = messageOrInteraction.createdTimestamp;
 		const embed = new EmbedBuilder()
 			.setColor(Colors.white)
 			.setThumbnail(this.container.client.user!.displayAvatarURL())
-			.setDescription(`¡Aquí estoy!\nAPI Latency: ${Math.round(msg - message.createdTimestamp)}\nBot Latency: ${this.container.client.ws.ping}`);
+			.setDescription(
+				`¡Aquí estoy!\nAPI Latency: ${Math.round(msg - messageOrInteraction.createdTimestamp)}\nBot Latency: ${this.container.client.ws.ping}`
+			);
 
-		return message.reply({ embeds: [embed] });
+		return messageOrInteraction.reply({ embeds: [embed] });
 	}
 }

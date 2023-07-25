@@ -9,12 +9,11 @@ const query = {
 	verboseCategories: true,
 	queryLanguages: [Language.Spanish, Language.English],
 	resultLanguage: Language.Spanish
-} satisfies genshindb.QueryOptions; // Opciones para no ponerlo por cada búsqueda, satisfaciendo la interfaz para que no ocurra ningún error
-
+} satisfies genshindb.QueryOptions;
 @ApplyOptions<InteractionHandler.Options>({
 	interactionHandlerType: InteractionHandlerTypes.Autocomplete
 })
-export class AutocompleteHandler extends InteractionHandler {
+export default class extends InteractionHandler {
 	public override async run(interaction: AutocompleteInteraction, result: InteractionHandler.ParseResult<this>) {
 		return interaction.respond(result);
 	}
@@ -29,7 +28,17 @@ export class AutocompleteHandler extends InteractionHandler {
 
 			case 'weapon': {
 				const result = genshindb.weapons('names', { ...query });
-				return this.map(result, focusedValue)
+				return this.map(result, focusedValue);
+			}
+
+			case 'animal': {
+				const result = genshindb.animals('names', { ...query });
+				return this.map(result, focusedValue);
+			}
+
+			case 'achivement': {
+				const result = genshindb.achievements('names', { ...query });
+				return this.map(result, focusedValue);
 			}
 
 			default: {
@@ -39,9 +48,8 @@ export class AutocompleteHandler extends InteractionHandler {
 	}
 
 	private map(result: any[], focused: AutocompleteFocusedOption) {
-		const map = result.filter((c) => c.name.toLowerCase().startsWith(focused.value.toLowerCase()))
-		.map((_) => ({ name: _.name, value: _.name }));
+		const map = result.filter((c) => c.name.toLowerCase().startsWith(focused.value.toLowerCase())).map((_) => ({ name: _.name, value: _.name }));
 
-		return this.some(result.length > 25 ? map.slice(0,25) : map);
+		return this.some(result.length > 25 ? map.slice(0, 25) : map);
 	}
 }

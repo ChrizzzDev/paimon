@@ -15,15 +15,17 @@ setup({ path: join(srcDir, '.env') });
 colorette.createColors({ useColor: true });
 
 declare module '@skyra/env-utilities' {
-  interface Env {
-    DISCORD_TOKEN: string;
-    STATCORD_KEY: string;
-    DATABASE_URI: string;
-  }
+	interface Env {
+		DISCORD_TOKEN: string;
+		CLIENT_SECRET: string;
+		STATCORD_KEY: string;
+		DATABASE_URI: string;
+		OWNERS: never;
+	}
 }
 
 declare module '@sapphire/pieces' {
-  interface Container {
-    utility: Util;
-  }
+	interface Container {
+		utility: Util;
+	}
 }
